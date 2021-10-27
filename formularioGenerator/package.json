@@ -1,0 +1,7 @@
+{
+  "name": "formularioGenerator",
+  "version": "1.0.0",
+  "dependencies": {
+    "@hapi/hapi": "^18.4.0"
+  }
+}
