@@ -1,12 +1,31 @@
 // Módulos
 const Hapi = require('@hapi/hapi');
 const routes = require("./controllers/routes.js");
+const questionsRepository = require("./repositories/questionsRepository.js");
+const repository = require("./repositories/repository.js");
 
 // Server
 const server = Hapi.server({
     port: 8080,
     host: 'localhost',
 });
+
+server.method({
+    name: 'getQuestionsRepository',
+    method: () => {
+        return questionsRepository;
+    },
+    options: {}
+});
+
+server.method({
+    name: 'getRepository',
+    method: () => {
+        return repository;
+    },
+    options: {}
+});
+
 
 const startServer = async () => {
     try {

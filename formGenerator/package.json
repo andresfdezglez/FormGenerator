@@ -2,6 +2,8 @@
   "name": "formularioGenerator",
   "version": "1.0.0",
   "dependencies": {
-    "@hapi/hapi": "^18.4.0"
+    "@hapi/hapi": "^18.4.0",
+    "@hapi/vision": "^5.5.4",
+    "mongodb": "^2.2.33"
   }
 }
