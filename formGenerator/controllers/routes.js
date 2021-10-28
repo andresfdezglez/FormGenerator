@@ -1,8 +1,13 @@
 module.exports = {
     name: 'Routes',
+
+
+
+
     register: async (server, options) => {
         questionsRepository = server.methods.getQuestionsRepository();
         answersRepository = server.methods.getAnswersRepository();
+        usersRepository = server.methods.getUsersRepository();
         repository = server.methods.getRepository()
         server.route([
             {
@@ -27,6 +32,7 @@ module.exports = {
                         .then((db) => questionsRepository.insertQuestion(db, question))
                         .then((id) => {
                             respuesta = "";
+
                             if (id == null) {
                                 respuesta =  "Error al insertar"
                             } else {
@@ -65,7 +71,39 @@ module.exports = {
                     return respuesta;
 
                 }
+            },
+
+            {
+                method: 'POST',
+                path: '/register',
+                handler: async (req, h) => {
+                    password = require('crypto').createHmac('sha256', 'secreto')
+                        .update(req.payload.password).digest('hex');
+
+                    user = {
+                        user: req.payload.user,
+                        password: password,
+                    }
+
+                    // await no continuar hasta acabar esto
+                    // Da valor a respuesta
+                    await repository.conexion()
+                        .then((db) => usersRepository.insertUser(db, user))
+                        .then((id) => {
+
+                            respuesta = "";
+                            if (id == null) {
+                                respuesta =  "Error al insertar"
+                            } else {
+                                respuesta = "Insertado id:  "+ id;
+
+                            }
+                        })
+
+                    return respuesta;
+                }
             }
+
 
         ])
     }

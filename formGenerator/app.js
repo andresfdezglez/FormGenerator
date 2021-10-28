@@ -3,6 +3,7 @@ const Hapi = require('@hapi/hapi');
 const routes = require("./controllers/routes.js");
 const questionsRepository = require("./repositories/questionsRepository.js");
 const answersRepository = require("./repositories/answersRepository.js");
+const usersRepository = require("./repositories/usersRepository.js");
 const repository = require("./repositories/repository.js");
 
 // Server
@@ -23,6 +24,14 @@ server.method({
     name: 'getAnswersRepository',
     method: () => {
         return answersRepository;
+    },
+    options: {}
+});
+
+server.method({
+    name: 'getUsersRepository',
+    method: () => {
+        return usersRepository;
     },
     options: {}
 });
