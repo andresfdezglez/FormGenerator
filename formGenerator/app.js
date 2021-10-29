@@ -1,9 +1,12 @@
 // Módulos
 const Hapi = require('@hapi/hapi');
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
 const routes = require("./controllers/routes.js");
 const questionsRepository = require("./repositories/questionsRepository.js");
 const answersRepository = require("./repositories/answersRepository.js");
 const usersRepository = require("./repositories/usersRepository.js");
+const formsRepository = require("./repositories/formsRepository.js");
 const repository = require("./repositories/repository.js");
 
 // Server
@@ -16,6 +19,14 @@ server.method({
     name: 'getQuestionsRepository',
     method: () => {
         return questionsRepository;
+    },
+    options: {}
+});
+
+server.method({
+    name: 'getFormsRepository',
+    method: () => {
+        return formsRepository;
     },
     options: {}
 });
@@ -47,7 +58,21 @@ server.method({
 
 const startServer = async () => {
     try {
+        await server.register(Inert);
+        await server.register(Vision);
         await server.register(routes);
+        await server.views({
+            engines: {
+                html: require('handlebars')
+            },
+            relativeTo: __dirname,
+            path: './views',
+            layoutPath: './views/layout',
+            context : {
+                sitioWeb: "formGenerator"
+            }
+        });
+
         await server.start();
         console.log('Server running on localhost:8080');
     } catch (error) {

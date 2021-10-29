@@ -1,13 +1,11 @@
 module.exports = {
     name: 'Routes',
 
-
-
-
     register: async (server, options) => {
         questionsRepository = server.methods.getQuestionsRepository();
         answersRepository = server.methods.getAnswersRepository();
         usersRepository = server.methods.getUsersRepository();
+        formsRepository = server.methods.getFormsRepository();
         repository = server.methods.getRepository()
         server.route([
             {
@@ -102,7 +100,62 @@ module.exports = {
 
                     return respuesta;
                 }
+            },
+
+            {
+                method: 'GET',
+                path: '/register',
+                handler: async (req, h) => {
+                    return h.view('registro',
+                        {},
+                        { layout: 'base'});
+                }
+            },
+            {
+                method: 'GET',
+                path: '/{param*}',
+                handler: {
+                    directory: {
+                        path: './public'
+                    }
+                }
+            },
+
+            {
+                method: 'POST',
+                path: '/crear',
+                handler: async (req, h) => {
+
+                    var preguntas = req.payload.preguntas.split(";");
+
+                    form = {
+                        title: req.payload.title,
+                        description: req.payload.description,
+                        autor: "andres",
+                        preguntas: preguntas,
+                        respuestas:[]
+
+                    }
+
+                    // await no continuar hasta acabar esto
+                    // Da valor a respuesta
+                    await repository.conexion()
+                        .then((db) => formsRepository.insertForm(db, form))
+                        .then((id) => {
+
+                            respuesta = "";
+                            if (id == null) {
+                                respuesta =  "Error al insertar"
+                            } else {
+                                respuesta = "Insertado id:  "+ id;
+
+                            }
+                        })
+
+                    return respuesta;
+                }
             }
+
 
 
         ])
