@@ -16,5 +16,24 @@ module.exports = {
         });
 
         return promise;
-}
+},
+
+    obtenerUsuarios : async (db, criterio) => {
+        promise = new Promise((resolve, reject) => {
+            var collection = db.collection('users');
+            collection.find(criterio).toArray( (err, result) => {
+                if (err) {
+                    resolve(null);
+                } else {
+
+                    resolve(result);
+                }
+                db.close();
+            });
+        });
+
+        return promise;
+
+    }
+
 }

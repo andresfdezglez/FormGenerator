@@ -154,7 +154,106 @@ module.exports = {
 
                     return respuesta;
                 }
-            }
+            },
+
+            {
+                method: 'GET',
+                path: '/login',
+                handler: async (req, h) => {
+                    return h.view('login',
+                        { },
+                        { layout: 'base'});
+                }
+            },
+            {
+                method: 'GET',
+                path: '/crear',
+                handler: async (req, h) => {
+                    return h.view('crear',
+                        { },
+                        { layout: 'base'});
+                }
+            },
+
+            {
+                method: 'POST',
+                path: '/login',
+                handler: async (req, h) => {
+                    password = require('crypto').createHmac('sha256', 'secreto')
+                        .update(req.payload.password).digest('hex');
+
+                    usuarioBuscar = {
+                        usuario: req.payload.usuario,
+                        password: password,
+                    }
+
+                    // await no continuar hasta acabar esto
+                    // Da valor a respuesta
+                    await  repository.conexion()
+                        .then((db) =>  usersRepository.obtenerUsuarios(db, usuarioBuscar))
+                        .then((usuarios) => {
+                            respuesta = "";
+                            if (usuarios == null || usuarios.length == 0 ) {
+                                respuesta =  "No identificado"
+                            } else {
+                                respuesta = "Identificado correctamente";
+                            }
+                        })
+
+                    return respuesta;
+                }
+            },
+
+            {
+                method: 'GET',
+                path: '/misformularios',
+                handler: async (req, h) => {
+
+
+                    var criterio = {};
+                    if (req.query.criterio != null ){
+                        criterio = { "title" : {$regex : ".*"+req.query.criterio+".*"}};
+                    }
+
+
+                    await repository.conexion()
+                        .then((db) => formsRepository. obtenerFormularios(db, criterio))
+                        .then((formularios) => {
+                            listaformularios = formularios;
+                        })
+
+                    return h.view('formularios',
+                        {
+                            usuario: 'andresfpano',
+                            formularios: listaformularios
+                        },{ layout: 'base'});
+
+                }
+            },
+
+            {
+                method: 'GET',
+                path: '/formulario/{id}',
+                handler: async (req, h) => {
+
+                    var id = req.params.id;
+
+                    var criterio = {"_id" : id};
+
+                    await repository.conexion()
+                        .then((db) => formsRepository. obtenerFormularios(db, criterio))
+                        .then((formularios) => {
+                            formulario = formularios[0];
+                        })
+
+                    return h.view('formulario',
+                        {
+                            usuario: 'andresfpano',
+                            formulario: formulario
+                        },{ layout: 'base'});
+
+                }
+            },
 
 
 

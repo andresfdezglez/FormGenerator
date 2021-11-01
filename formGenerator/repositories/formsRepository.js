@@ -1,6 +1,6 @@
 module.exports = {
 
-    insertForm : async (db, form) => {
+    insertForm: async (db, form) => {
 
         promise = new Promise((resolve, reject) => {
             var collection = db.collection('forms');
@@ -15,6 +15,24 @@ module.exports = {
             });
         });
 
+        return promise;
+    },
+
+    obtenerFormularios: async (db, criterio) => {
+        promise = new Promise((resolve, reject) => {
+            var collection = db.collection('forms');
+            collection.find(criterio).toArray((err, result) => {
+                if (err) {
+                    resolve(null);
+                } else {
+
+                    resolve(result);
+                }
+                db.close();
+            });
+
+
+    })
         return promise;
     }
 }

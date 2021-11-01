@@ -1,0 +1,35 @@
+<section class="uk-section uk-section-default">
+
+    <div class="uk-margin">
+        <form class="uk-search uk-search-default uk-width-1-1"
+              action="/misformularios">
+            <span uk-search-icon></span>
+            <input class="uk-search-input"
+                   name="criterio"
+                   type="search" placeholder="Buscar...">
+        </form>
+    </div>
+
+    <div class="uk-container">
+        <!-- sin incluir uk-grid no va el grid -->
+        <div class="uk-child-width-1-2@m" uk-grid >
+
+            {{#each formularios}}
+            <div >
+                <div style="height:400px;"
+                     class="uk-card uk-card-default uk-grid uk-grid-collapse uk-child-width-1-2 uk-margin">
+                    <div>
+                        <div class="uk-card-body">
+                            <h3 class="uk-card-title">{{ title }}</h3>
+                            <p>{{ description }}.</p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {{/each}}
+        </div>
+    </div>
+</section>
