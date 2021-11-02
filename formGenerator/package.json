@@ -1,6 +1,10 @@
 {
   "name": "formularioGenerator",
   "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
   "dependencies": {
     "@hapi/cookie": "^10.1.2",
     "@hapi/hapi": "^18.4.0",
