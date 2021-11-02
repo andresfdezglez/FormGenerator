@@ -1,6 +1,6 @@
 module.exports = {
 
-    insertAnswer : async (db, question) => {
+    insertAnswer : async (db, answer) => {
 
         promise = new Promise((resolve, reject) => {
             var collection = db.collection('answers');

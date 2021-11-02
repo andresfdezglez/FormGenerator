@@ -2,6 +2,7 @@
 const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
+const Cookie = require('@hapi/cookie');
 const routes = require("./controllers/routes.js");
 const questionsRepository = require("./repositories/questionsRepository.js");
 const answersRepository = require("./repositories/answersRepository.js");
@@ -60,6 +61,33 @@ const startServer = async () => {
     try {
         await server.register(Inert);
         await server.register(Vision);
+        await server.register(Cookie);
+        await server.auth.strategy('auth-registrado', 'cookie', {
+            cookie: {
+                name: 'session-id',
+                password: 'passwordcifracookie-passwordcifracookie-passwordcifracookie-passwordcifracookie',
+                isSecure: false
+            },
+            redirectTo: '/',
+            validateFunc: function (request, cookie){
+                promise = new Promise((resolve, reject) => {
+
+                    usuarioCriterio = {"usuario": cookie.usuario};
+                    if ( cookie.usuario != null && cookie.usuario != "" &&
+                        cookie.secreto == "secreto"){
+
+                        resolve({valid: true,
+                            credentials: cookie.usuario});
+
+                    } else {
+                        resolve({valid: false});
+                    }
+                });
+
+                return promise;
+            }
+        });
+
         await server.register(routes);
         await server.views({
             engines: {

@@ -2,14 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c5b2a054-74e3-4cff-84f4-e84068761b26" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/js/crear.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/crear.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/formulario.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/formularios.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/formulario.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/answersRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/answersRepository.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repositories/formsRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/formsRepository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/usersRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/usersRepository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/formularios.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/formularios.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/layout/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/layout/base.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +25,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package.json" />
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -86,7 +90,9 @@
       <workItem from="1635541418350" duration="4898000" />
       <workItem from="1635683856517" duration="3273000" />
       <workItem from="1635756958623" duration="3921000" />
-      <workItem from="1635783280717" duration="1377000" />
+      <workItem from="1635783280717" duration="2549000" />
+      <workItem from="1635796778391" duration="9794000" />
+      <workItem from="1635844213971" duration="1432000" />
     </task>
     <servers />
   </component>
