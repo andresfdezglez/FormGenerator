@@ -10,9 +10,11 @@ const usersRepository = require("./repositories/usersRepository.js");
 const formsRepository = require("./repositories/formsRepository.js");
 const repository = require("./repositories/repository.js");
 
+const port = process.env.PORT || 8080
+
 // Server
 const server = Hapi.server({
-    port: 8080,
+    port: port,
     host: 'localhost',
 });
 
