@@ -52,22 +52,38 @@ module.exports = {
                         password: password,
                     }
 
-                    // await no continuar hasta acabar esto
-                    // Da valor a respuesta
-                    await repository.conexion()
-                        .then((db) => usersRepository.insertUser(db, user))
-                        .then((id) => {
+                    var criterio = {user: req.payload.user}
 
+                    var url = "";
+                    await  repository.conexion()
+                        .then((db) =>  usersRepository.obtenerUsuarios(db, criterio))
+                        .then((usuarios) => {
                             respuesta = "";
-                            if (id == null) {
-                                respuesta =  "Error al insertar"
-                            } else {
-                                respuesta = "Insertado id:  "+ id;
+                            if (usuarios == null || usuarios.length == 0 ) {
+                                repository.conexion()
+                                    .then((db) => usersRepository.insertUser(db, user))
+                                    .then((id) => {
 
+                                        respuesta = "";
+                                        if (id == null) {
+                                            respuesta =  "Error al insertar"
+                                        } else {
+                                            respuesta = "Insertado id:  "+ id;
+
+                                        }
+                                    });
+
+                              url = "/misformularios"
+                            } else {
+                                url = "/register";
                             }
                         })
 
-                    return respuesta;
+
+
+                    return h.redirect(url);
+
+
                 }
             },
 
@@ -101,14 +117,14 @@ module.exports = {
 
                     var preguntas = req.payload.preguntas.split(";");
 
-                    preguntas.splice(respuestas.length-1,1);
+                    preguntas.splice(preguntas.length-1,1);
 
                     form = {
                         title: req.payload.title,
                         description: req.payload.description,
                         autor: req.state["session-id"].usuario,
                         preguntas: preguntas,
-                        activado:false
+                        activado:true
 
                     }
 
@@ -127,7 +143,7 @@ module.exports = {
                             }
                         })
 
-                    return respuesta;
+                    return h.redirect("/misformularios");
                 }
             },
 
@@ -156,13 +172,13 @@ module.exports = {
 
             {
                 method: 'POST',
-                path: '/login',
+                path: '/',
                 handler: async (req, h) => {
                     password = require('crypto').createHmac('sha256', 'secreto')
                         .update(req.payload.password).digest('hex');
 
                     usuarioBuscar = {
-                        usuario: req.payload.usuario,
+                        user: req.payload.usuario,
                         password: password,
                     }
 
@@ -176,7 +192,7 @@ module.exports = {
                                 respuesta =  "No identificado"
                             } else {
                                 req.cookieAuth.set({
-                                    usuario: usuarios[0].usuario,
+                                    usuario: usuarios[0].user,
                                     secreto : "secreto"
                                 });
 
@@ -184,7 +200,7 @@ module.exports = {
                             }
                         })
 
-                    return respuesta;
+                    return h.redirect("/misformularios");
                 }
             },
 
@@ -198,11 +214,13 @@ module.exports = {
                 handler: async (req, h) => {
 
 
-                    var criterio = { "usuario" : req.state["session-id"].usuario};
+                    var criterio = { "autor" : req.state["session-id"].usuario};
 
-                    if (req.query.criterio != null ){
-                        criterio = { "title" : {$regex : ".*"+req.query.criterio+".*"}};
-                    }
+                    if (req.query.criterio != null )
+                        criterio = {$and: [{ "title" : {$regex : ".*"+req.query.criterio+".*"}},{"autor": req.state["session-id"].usuario}]};
+
+
+
 
 
                     await repository.conexion()
@@ -213,7 +231,7 @@ module.exports = {
 
                     return h.view('formularios',
                         {
-                            usuario: 'andresfpano',
+                            usuario: req.state["session-id"].usuario,
                             formularios: listaformularios
                         },{ layout: 'base'});
 
@@ -239,7 +257,7 @@ module.exports = {
 
                     return h.view('formulario',
                         {
-                            usuario: 'andresfpano',
+
                             formulario: formulario,
                             questions:formulario.preguntas,
                             id:id
@@ -285,7 +303,7 @@ module.exports = {
 
 
 
-                    return "Respuestas guardadas"
+                  return h.redirect("/");
                 }
             },
             {
@@ -298,6 +316,76 @@ module.exports = {
                         { layout: 'base'});
                 }
             },
+
+
+            {
+                method: 'GET',
+                path: '/modificar/{id}',
+                options : {
+                    auth: 'auth-registrado',
+
+                },
+                handler: async (req, h) => {
+
+
+                    var criterio = { "_id" : require("mongodb").ObjectID(req.params.id) };
+
+                    await repository.conexion()
+                        .then((db) => formsRepository. obtenerFormularios(db, criterio))
+                        .then((formularios) => {
+
+                            formulario = formularios[0]
+
+                        })
+
+                    if(formulario.activado === true)
+                        formulario.activado = false
+                    else
+                        formulario.activado = true;
+
+
+                    await repository.conexion()
+                        .then((db) => formsRepository.modificarFormulario(db,criterio,formulario))
+                        .then((id) => {
+                            respuesta = "";
+                            if (id == null) {
+                                respuesta =  "Error al modificar"
+                            } else {
+                                return h.redirect("/misformularios");
+                            }
+                        })
+
+                    return h.redirect("/misformularios");
+                }
+            },
+
+            {
+                method: 'GET',
+                path: '/respuestas/{id}',
+                handler: async (req, h) => {
+
+                    var mongo = require("mongodb");
+
+                    var id = mongo.ObjectId(req.params.id);
+
+                    var criterio = {"idForm" : id};
+
+
+                    await repository.conexion()
+                        .then((db) =>answersRepository. obtenerRespuestas(db, criterio))
+                        .then((respuestas) => {
+                            listarespuestas = respuestas;
+                        })
+
+                    return h.view('respuestas',
+                        {
+                             respuestas:listarespuestas,
+
+                        },{ layout: 'base'});
+
+                }
+            },
+
 
 
 

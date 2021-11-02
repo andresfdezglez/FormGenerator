@@ -1,4 +1,4 @@
-<section class="uk-section uk-section-default">
+<section class="uk-section">
 
     <div class="uk-margin">
         <form class="uk-search uk-search-default uk-width-1-1"
@@ -11,29 +11,53 @@
     </div>
 
     <div class="uk-container">
-        <!-- sin incluir uk-grid no va el grid -->
-        <div class="uk-child-width-1-2@m" uk-grid >
+        <div class="uk-overflow-auto">
+            <table class="uk-table uk-table-hover uk-table-middle uk-table-divider">
+                <thead>
+                <tr>
+                    <th class="uk-table-expand">Titulo</th>
+                    <th class="uk-width-small">Descripción</th>
+                    <th class="uk-width-small">Enlace para compartir</th>
+                    <th class="uk-width-small">Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each formularios}}
+                <tr>
+                    <td >{{ title }}</td>
+                    <td >{{ description }}
 
-            {{#each formularios}}
-            <div >
-                <div style="height:400px;"
-                     class="uk-card uk-card-default uk-grid uk-grid-collapse uk-child-width-1-2 uk-margin">
-                    <div>
-                        <div class="uk-card-body">
-                            <h3 class="uk-card-title">{{ title }}</h3>
-                            <p>{{ description }}.</p>
-                            <span> Enlace para compartir: <strong>http://localhost:8080/formulario/{{ _id }}</strong></span>
+                   <td>
+                    {{#if activado}}
+                      <strong>http://localhost:8080/formulario/{{ _id }}</strong>
+                    {{/if}}
+                </td>
+
+                    <td>
+
+                        {{#if activado}}
+                        <a class="uk-link" href="/modificar/{{_id}}">Desactivar</a>
+                        {{else}}
+                        <a class="uk-link" href="/modificar/{{_id}}">Activar</a>
+                        {{/if}}
+
+                        <br>
 
 
 
-                            <a class="uk-link" href="/activar/{{ _id }}">Activar</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            {{/each}}
+                    </td>
+                </tr>
+                {{/each}}
+                </tbody>
+            </table>
         </div>
+
+        <ul class="uk-pagination uk-flex-center" uk-margin>
+            <li><a href="#"><span uk-pagination-previous></span></a></li>
+            <li><a class="uk-active" href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#"><span uk-pagination-next></span></a></li>
+        </ul>
     </div>
 </section>

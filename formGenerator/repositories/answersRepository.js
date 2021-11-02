@@ -16,5 +16,24 @@ module.exports = {
         });
 
         return promise;
-    }
+    },
+
+    obtenerRespuestas: async (db, criterio) => {
+        promise = new Promise((resolve, reject) => {
+            var collection = db.collection('answers');
+            collection.find(criterio).toArray((err, result) => {
+                if (err) {
+                    resolve(null);
+                } else {
+
+                    resolve(result);
+                }
+                db.close();
+            });
+
+
+        })
+        return promise;
+    },
+
 }

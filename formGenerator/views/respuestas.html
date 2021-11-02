@@ -1,0 +1,27 @@
+<section class="uk-section uk-section-default">
+
+
+    <div class="uk-container">
+        <!-- sin incluir uk-grid no va el grid -->
+        <div class="uk-child-width-1-2@m" uk-grid >
+
+            {{#each respuestas}}
+            <div >
+                <div style="height:400px;"
+                     class="uk-card uk-card-default uk-grid uk-grid-collapse uk-child-width-3-3 uk-margin">
+                    <div>
+
+                        <div class="uk-card-body">
+
+                            <p>{{ this }}.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{/each}}
+        </div>
+    </div>
+</section>
